@@ -113,11 +113,27 @@ else:
     print("FIRST ENCRYPTION STEP PASSED")
 
 try:
-    cmd_6 = "exit"
-    os.system(cmd_6)
+    cmd_7 = "exit"
+    os.system(cmd_7)
 except OSError:
     print("ERROR SECOND ENCRYPTION STEP")
 else:
     print("SECOND ENCRYPTION STEP PASSED")
 
-print("#############10101010110##########")
+try:
+    cmd_8 = "mv fp_dc_setup_guide.pdf.cpabe ceo.cpabe"
+    os.system(cmd_8)
+except OSError:
+    print("ERROR RENAMING FILE FROM fp_dc_setup_guide.pdf.cpabe  TO ceo.cpabe")
+else:
+    print("FILE SUCCESSFULLY RENAMED FROM fp_dc_setup_guide.pdf.cpabe  TO ceo.cpabe")
+
+os.chdir("../user_1-dir")
+
+try:
+    cmd_9 = "cpabe-dec -k -o fp_dc_setup_guide.pdf pubKey user_1_priv ../pub-dir/ceo.cpabe"
+    os.system(cmd_9)
+except OSError:
+    print("ERROR DECRYPTON ceo.cpabe")
+else:
+    print("DECRYPTION ceo.cpabe PASSED")
