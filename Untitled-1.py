@@ -1,18 +1,26 @@
 import os
-import sys
+import time
+from pytictoc import TicToc
+
+try:
+    ExerciseDir = "/home/abe/EXERCISE_1"
+    os.mkdir(ExerciseDir)
+except OSError:
+    print("ERROR CREATING DIRECTORY: /home/abe/EXERCISE_1")
+else:
+    print("DIRECTORY CREATED: /home/abe/EXERCISE_1")
 
 userList = ["master-dir", "user_1-dir", "user_2-dir", "user_3-dir", "user_4-dir", "user_5-dir"]
 dirs = []
 for user in userList:
     newDir = "/home/abe/EXERCISE_1/" + user
     dirs.append(newDir)
-print(dirs)
 
 for dir in dirs:
     try:
         os.mkdir(dir)
     except OSError:
-        print("ERROR CREATING DIRECTOR: %s" % dir)
+        print("ERROR CREATING DIRECTORY: %s" % dir)
     else:
         print("DIRECTORY CREATED: %s" % dir)
 
@@ -104,6 +112,11 @@ else:
     print("PDF FILE SUCCESFULLY DOWLOADED (5 MB)")
     #print("SUCCESSFULLY MOVED /home/abe/merged.pdf TO /home/abe/EXERCISE_1/pub-dir/MergedPDF.pdf")
 
+#Let us measure the time
+
+startTime=time.time()
+t.tic()
+
 try:
     cmd_6 = "cpabe-enc -k pubKey fp_dc_setup_guide.pdf ceo"
     os.system(cmd_6)
@@ -137,3 +150,7 @@ except OSError:
     print("ERROR DECRYPTON ceo.cpabe")
 else:
     print("DECRYPTION ceo.cpabe PASSED")
+
+executionTime = (time.time() - startTime)
+print('Execution time in seconds: ' + str(executionTime))
+t.toc()
