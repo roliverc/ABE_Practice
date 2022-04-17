@@ -2,6 +2,8 @@ import os
 import time
 from pytictoc import TicToc
 
+t = TicToc()
+
 try:
     ExerciseDir = "/home/abe/EXERCISE_1"
     os.mkdir(ExerciseDir)
