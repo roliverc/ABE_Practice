@@ -78,7 +78,8 @@ def setCpabeKeys():
 
 ################### DRIVER CODE ##################
 
-n_users, n_attributes = checkInput()
-n_users, n_attributes = int(n_users), int(n_attributes)
+#n_users, n_attributes = [checkInput()
+#n_users, n_attributes = int(n_users), int(n_attributes)
+n_users, n_attributes = [int(arg) for arg in checkInput()]
 creatingDirectories()
 setCpabeKeys()
