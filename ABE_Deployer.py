@@ -28,7 +28,7 @@ def checkInput():
             sys.exit(1)
     return cmd_args
 
-def creatingDirectories():
+def creatingDirectories(n_users):
     """
     try:
         ExerciseDir = "/home/abe/ABE_CURRENT"
@@ -40,7 +40,7 @@ def creatingDirectories():
         print(c.OK + "Creating directory: %s" % ExerciseDir)
     """
 
-    userList = ["master", "pub"] + ["user_"+str(i) for i in range(0,n_users)]
+    userList = ["master", "pub"] + ["user_"+str(i) for i in range(n_users)]
     userList = [user + "-dir" for user in userList] # how to improve this??
 
     # Obtains current working directory
@@ -58,6 +58,7 @@ def creatingDirectories():
             sys.exit(1)
         else:
             print(c.OK + "Creating directory: %s" % dir)
+    return 
 
 def setCpabeKeys():
     # Now change the directory
@@ -89,26 +90,43 @@ def setCpabeKeys():
         sys.exit(1)
     else:
         print(c.OK + "Copying Public Key into the directories of all users.")
+    return
 
 ################### KEY & ATTRIBUTE GENERATION ##################
 
-def attributeCreation():
-    """
-    listAllAttributes = []
+def attributeGeneration(n_users,n_attributes):
+    listAllAttributes = ["attr_"+str(i) for i in range(20)]
+    userProfiles = []
+    for user in range(n_users):
+        chosenAttributes = random.sample(listAllAttributes,n_attributes)
+        userProfiles.append(chosenAttributes)
+    print(c.OK + "Generating Random Attributes and Profiles")
+    return userProfiles
 
-    departments = ['it_dpt', 'hr_dpt'] # 1
-    position = ['worker', 'executive'] # 2
-    area = ['area_A', 'area_B'] # 3
-    building = ['1','2'] # 4
-    office = ['01','02'] # 5
-    security_clearance = ['no' , 'yes']
-    """
-    listAllAttributes = []
+def profileGeneration(userProfiles):
+    cmdList = []
+    for i in range(n_users):
+        currentProfile = userProfiles[i]
+        cmdInd = "cpabe-keygen -o ../user_"+str(i)+"-dir/user_"+str(i)+"_priv pubKey msk " + " ".join(currentProfile)
+        cmdList.append(cmdInd)
+    count = 0
+    for cmd in cmdList:
+        try:
+            os.system(cmd)
+        except OSError:
+            print(c.FAIL + "Creating user_%i's private key." % count)
+            sys.exit(1)
+        else:
+            print(c.OK + "Creating user_%i's private key." % count)
+        count += 1
+    return
 
 ################### DRIVER CODE ##################
 
 #n_users, n_attributes = [checkInput()
 #n_users, n_attributes = int(n_users), int(n_attributes)
 n_users, n_attributes = [int(arg) for arg in checkInput()]
-creatingDirectories()
+creatingDirectories(n_users)
 setCpabeKeys()
+userProfiles = attributeGeneration(n_users,n_attributes)
+profileGeneration(userProfiles)
