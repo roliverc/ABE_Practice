@@ -28,10 +28,16 @@ def checkInput():
 
 def downloadingPDF():
     # Now change the directory
-    os.chdir("/home/abe/EXERCISE_1/pub-dir")
+    #os.chdir("/home/abe/EXERCISE_1/pub-dir")
+    cmd_1 = "cd /home/abe/"
+    os.system(cmd_1)
     try:
-        cmd = "wget https://www.cs.utexas.edu/~bwaters/publications/papers/cp-abe.pdf"
-        os.system(cmd)
+        environment = os.environ
+        counter = environment['counter']
+        cmd_2 = "wget -P /home/abe/EXERCISE_"+str(counter)+"/pub-dir https://download.support.xerox.com/pub/docs/FlowPort2/userdocs/any-os/en/fp_dc_setup_guide.pdf"
+        #cmd = "wget https://download.support.xerox.com/pub/docs/FlowPort2/userdocs/any-os/en/fp_dc_setup_guide.pdf"
+        #cmd_2 = "for i in ../EXERCISE_*/; do wget -P $i/pub-dir https://download.support.xerox.com/pub/docs/FlowPort2/userdocs/any-os/en/fp_dc_setup_guide.pdf; done"
+        os.system(cmd_2)
     except OSError:
         print(c.FAIL + "Downloading PDF file.")
         sys.exit(1)
