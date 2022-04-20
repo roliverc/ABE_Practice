@@ -4,6 +4,7 @@ import time
 import sys
 import random
 from Color import c
+from ABE_Deployer import userProfiles
 
 # USAGE CASE EXAMPLE: [euler@fedora]~% python3 Encryption_Decryption.py 5
 # which means that we want 20 users and 5 attributes
@@ -12,19 +13,29 @@ from Color import c
 # ESTE ARCHIVO VA DESDE LA DIAPOSITVA 10 (INCLUIDA)
 # ANTES DE LA 10: ABE_Deployer.py
 
-def checkInput():
+def cmdReturn2():
+    cmd_args2 = sys.argv[1:]
+    return cmd_args2
+
+"""
+def checkInput2():
     try:
         cmd_args = sys.argv[1:]
+        print(cmd_args)
     except OSError:
+        print(cmd_args)
         print(c.FAIL + "Receiving arguments from terminal.")
         sys.exit(1)
     else:
         if len(cmd_args) == 1:
+            print(cmd_args)
             print(c.OK + "Checking number of arguments passed.")
         else:
-            print(c.FAIL + "Checking number of arguments passed.")
+            print(cmd_args)
+            print(c.FAIL + "Checking number of arguments passed." + str(len(cmd_args)))
             sys.exit(1)
     return cmd_args
+"""
 
 def downloadingPDF():
     # Now change the directory
@@ -44,7 +55,38 @@ def downloadingPDF():
     else:
         print(c.OK + "Downloading PDF file.")
 
+def encipherForUsers(userProfiles):
+    cmdList = []
+    environment = os.environ
+    counter = environment['counter']
+    os.chdir("/home/abe/EXERCISE_"+str(counter)+"/pub-dir")
+    for i in range(len(userProfiles)):
+        currentProfile = userProfiles[i]
+        pol = " and ".join(currentProfile)
+        cmdInd = f'echo "{pol}" | cpabe-enc -k pubKey fp_dc_setup_guide.pdf -o ./encPdf{i}.cpabe '
+        cmdList.append(cmdInd)
+    count = 0
+    for cmd in cmdList:
+        try:
+            os.system(cmd)
+            cmd_2 = "exit"
+            os.system(cmd_2)
+        except OSError:
+            print(c.FAIL + "Enciphering the pdf file with user_%i's attributes." % count)
+            sys.exit(1)
+        else:
+            print(c.OK + "Enciphering the pdf file with user_%i's attributes." % count)
+        count += 1
+    return
+
+def decipherForUsers():
+    pass
+
 ################### DRIVER CODE ##################
 
-n_attributes = [int(arg) for arg in checkInput()]
-downloadingPDF()
+if __name__ == "__main__":
+    n_users, n_attributes = [int(arg) for arg in cmdReturn2()]
+    #print(len(n_attributes))
+    downloadingPDF()
+    encipherForUsers(userProfiles)
+    decipherForUsers()

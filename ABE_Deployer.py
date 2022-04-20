@@ -14,19 +14,30 @@ from Color import c
 
 ################### USER GENERATION ##################
 
+def cmdReturn():
+    cmd_args = sys.argv[1:]
+    return cmd_args
+
+"""
 def checkInput():
     try:
+        print(sys.argv[:])
         cmd_args = sys.argv[1:]
     except OSError:
+        print(len(cmd_args))
         print(c.FAIL + "Receiving arguments from terminal.")
         sys.exit(1)
     else:
         if len(cmd_args) == 2:
             print(c.OK + "Checking number of arguments passed.")
         else:
+            print(sys.argv[:])
+            print(len(cmd_args))
+            print(cmd_args)
             print(c.FAIL + "Checking number of arguments passed.")
             sys.exit(1)
     return cmd_args
+"""
 
 def creatingDirectories(n_users):
     """
@@ -122,11 +133,15 @@ def profileGeneration(userProfiles):
     return
 
 ################### DRIVER CODE ##################
-
-#n_users, n_attributes = [checkInput()
-#n_users, n_attributes = int(n_users), int(n_attributes)
-n_users, n_attributes = [int(arg) for arg in checkInput()]
-creatingDirectories(n_users)
-setCpabeKeys()
+n_users, n_attributes = [int(arg) for arg in cmdReturn()]
 userProfiles = attributeGeneration(n_users,n_attributes)
-profileGeneration(userProfiles)
+
+if __name__ == "__main__":
+    #n_users, n_attributes = [checkInput()
+    #n_users, n_attributes = int(n_users), int(n_attributes)
+    #n_users, n_attributes = [int(arg) for arg in cmdReturn()]
+    #userProfiles = attributeGeneration(n_users,n_attributes)
+    creatingDirectories(n_users)
+    setCpabeKeys()
+    #userProfiles = attributeGeneration(n_users,n_attributes)
+    profileGeneration(userProfiles)
