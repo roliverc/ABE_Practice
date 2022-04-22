@@ -3,7 +3,8 @@ import sys
 from Color import c
 from ABE_Deployer import userProfiles
 
-# USAGE CASE EXAMPLE: [euler@fedora]~% python3 Encryption_Decryption.py 20 5
+
+# USAGE CASE EXAMPLE: [euler@fedora]~% python3 Encryption_Decryption.py 5
 # which means that we want 20 users and 5 attributes
 
 # ATENCIÓN
@@ -13,6 +14,26 @@ from ABE_Deployer import userProfiles
 def cmdReturn2():
     cmd_args2 = sys.argv[1:]
     return cmd_args2
+
+"""
+def checkInput2():
+    try:
+        cmd_args = sys.argv[1:]
+        print(cmd_args)
+    except OSError:
+        print(cmd_args)
+        print(c.FAIL + "Receiving arguments from terminal.")
+        sys.exit(1)
+    else:
+        if len(cmd_args) == 1:
+            print(cmd_args)
+            print(c.OK + "Checking number of arguments passed.")
+        else:
+            print(cmd_args)
+            print(c.FAIL + "Checking number of arguments passed." + str(len(cmd_args)))
+            sys.exit(1)
+    return cmd_args
+"""
 
 def downloadingPDF():
     # Now change the directory
@@ -32,7 +53,7 @@ def downloadingPDF():
     else:
         print(c.OK + "Downloading PDF file.")
 
-def encipherForAllUsers(userProfiles):
+def encipherForUsers(userProfiles):
     cmdList = []
     environment = os.environ
     counter = environment['counter']
@@ -46,6 +67,8 @@ def encipherForAllUsers(userProfiles):
     for cmd in cmdList:
         try:
             os.system(cmd)
+            #cmd_2 = "exit"
+            #os.system(cmd_2)
         except OSError:
             print(c.FAIL + "Enciphering the pdf file with user_%i's attributes." % count)
             sys.exit(1)
@@ -53,9 +76,6 @@ def encipherForAllUsers(userProfiles):
             print(c.OK + "Enciphering the pdf file with user_%i's attributes." % count)
         count += 1
     return
-
-def decipherForAllUsers():
-    pass
 
 def encipherForUserZero(userProfiles):
     environment = os.environ
@@ -73,6 +93,9 @@ def encipherForUserZero(userProfiles):
     else:
         print(c.OK + "Encrypting the pdf file with user_0's attributes.")
     return
+
+def decipherForUsers():
+    pass
 
 def decipherForUserZero():
     environment = os.environ
@@ -106,5 +129,12 @@ def encDecLoopUserZero():
 
 if __name__ == "__main__":
     n_users, n_attributes = [int(arg) for arg in cmdReturn2()]
+    #environment = os.environ
+    #userProfiles = environment['userProfiles']
+    #print(len(n_attributes))
     downloadingPDF()
+    #encipherForUsers(userProfiles)
+    #decipherForUsers()
+    #encipherForUserZero(userProfiles)
+    #decipherForUserZero()
     encDecLoopUserZero()

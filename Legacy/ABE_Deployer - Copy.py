@@ -1,8 +1,13 @@
 import os
+import time
+#from pytictoc import TicToc 
 import sys
 import random
 from Color import c
 import string
+
+# USAGE CASE EXAMPLE: [euler@fedora]~% python3 User_Generator.py 20 5
+# which means that we want 20 users and 5 attributes
 
 # ATENCIÓN
 # ESTE ARCHIVO VA HASTA LA DIAPOSITVA 9 (INCLUIDA)
@@ -14,7 +19,39 @@ def cmdReturn():
     cmd_args = sys.argv[1:]
     return cmd_args
 
+"""
+def checkInput():
+    try:
+        print(sys.argv[:])
+        cmd_args = sys.argv[1:]
+    except OSError:
+        print(len(cmd_args))
+        print(c.FAIL + "Receiving arguments from terminal.")
+        sys.exit(1)
+    else:
+        if len(cmd_args) == 2:
+            print(c.OK + "Checking number of arguments passed.")
+        else:
+            print(sys.argv[:])
+            print(len(cmd_args))
+            print(cmd_args)
+            print(c.FAIL + "Checking number of arguments passed.")
+            sys.exit(1)
+    return cmd_args
+"""
+
 def creatingDirectories(n_users):
+    """
+    try:
+        ExerciseDir = "/home/abe/ABE_CURRENT"
+        os.mkdir(ExerciseDir)
+    except OSError:
+        print(c.FAIL + "Creating directory: %s" % ExerciseDir)
+        sys.exit(1)
+    else:
+        print(c.OK + "Creating directory: %s" % ExerciseDir)
+    """
+
     userList = ["master", "pub"] + ["user_"+str(i) for i in range(n_users)]
     userList = [user + "-dir" for user in userList] # how to improve this??
 
@@ -70,11 +107,12 @@ def setCpabeKeys():
 ################### KEY & ATTRIBUTE GENERATION ##################
 
 def attributeGeneration(n_users,n_attributes):
-    listAllAttributes = ["attr_"+str(i) for i in range(1000)]
+    listAllAttributes = ["attr_"+str(i) for i in range(19)]
     #listAllAttributes = ["attr_"+str(i) for i in range(20)]
     userProfiles = []
     for user in range(n_users):
         chosenAttributes = random.sample(listAllAttributes,n_attributes-1)
+        #chosenAttributes = random.sample(listAllAttributes,n_attributes)
         userProfiles.append(chosenAttributes)
     print(c.OK + "Generating Random Attributes and Profiles")
     return userProfiles
@@ -82,9 +120,8 @@ def attributeGeneration(n_users,n_attributes):
 def profileGeneration(userProfiles):
     cmdList = []
     for i in range(n_users):
-        unique = "a"+str(i)
-        #alphabet = list(string.ascii_lowercase[0:n_users])
-        userProfiles[i].append(unique)
+        alphabet = list(string.ascii_lowercase[0:n_users])
+        userProfiles[i].append(alphabet[i])
         currentProfile = userProfiles[i]
         print(currentProfile)
         #currentProfile = userProfiles[i]
@@ -103,8 +140,33 @@ def profileGeneration(userProfiles):
     return
 
 ################### DRIVER CODE ##################
+#n_users, n_attributes = [int(arg) for arg in cmdReturn()]
+#userProfiles = attributeGeneration(n_users,n_attributes)
+#n_users, n_attributes = [int(arg) for arg in cmdReturn()]
+#creatingDirectories(n_users)
+#setCpabeKeys()
+#userProfiles = attributeGeneration(n_users,n_attributes)
+#userProfiles = attributeGeneration(n_users,n_attributes)
+
 n_users, n_attributes = [int(arg) for arg in cmdReturn()]
 creatingDirectories(n_users)
 setCpabeKeys()
 userProfiles = attributeGeneration(n_users,n_attributes)
 profileGeneration(userProfiles)
+#os.environ['n_users'] = n_users
+#os.environ['n_attributes'] = n_attributes
+#os.environ['userProfiles'] = userProfiles
+
+"""
+if __name__ == "__main__":
+    #n_users, n_attributes = [checkInput()
+    #n_users, n_attributes = int(n_users), int(n_attributes)
+    #n_users, n_attributes = [int(arg) for arg in cmdReturn()]
+    #userProfiles = attributeGeneration(n_users,n_attributes)
+    n_users, n_attributes = [int(arg) for arg in cmdReturn()]
+    creatingDirectories(n_users)
+    setCpabeKeys()
+    userProfiles = attributeGeneration(n_users,n_attributes)
+    #userProfiles = attributeGeneration(n_users,n_attributes)
+    profileGeneration(userProfiles)
+"""
