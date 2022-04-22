@@ -1,10 +1,8 @@
 import os
-import time
-#from pytictoc import TicToc 
 import sys
-import random
 from Color import c
 from ABE_Deployer import userProfiles
+
 
 # USAGE CASE EXAMPLE: [euler@fedora]~% python3 Encryption_Decryption.py 5
 # which means that we want 20 users and 5 attributes
@@ -69,8 +67,8 @@ def encipherForUsers(userProfiles):
     for cmd in cmdList:
         try:
             os.system(cmd)
-            cmd_2 = "exit"
-            os.system(cmd_2)
+            #cmd_2 = "exit"
+            #os.system(cmd_2)
         except OSError:
             print(c.FAIL + "Enciphering the pdf file with user_%i's attributes." % count)
             sys.exit(1)
@@ -79,14 +77,64 @@ def encipherForUsers(userProfiles):
         count += 1
     return
 
+def encipherForUserZero(userProfiles):
+    environment = os.environ
+    counter = environment['counter']
+    os.chdir("/home/abe/EXERCISE_"+str(counter)+"/pub-dir")
+    userZeroProfile = userProfiles[0]
+    print(userZeroProfile)
+    pol = " and ".join(userZeroProfile)
+    cmd = f'echo "{pol}" | cpabe-enc -k pubKey fp_dc_setup_guide.pdf -o ./encPdf0.cpabe '
+    try:
+        os.system(cmd)
+    except OSError:
+        print(c.FAIL + "Encrypting the pdf file with user_0's attributes.")
+        sys.exit(1)
+    else:
+        print(c.OK + "Encrypting the pdf file with user_0's attributes.")
+    return
+
 def decipherForUsers():
     pass
+
+def decipherForUserZero():
+    environment = os.environ
+    counter = environment['counter']
+    os.chdir("/home/abe/EXERCISE_"+str(counter)+"/user_0-dir")
+    cmd = "cpabe-dec -k -o decPdf0.pdf pubKey user_0_priv ../pub-dir/encPdf0.cpabe"
+    try:
+        os.system(cmd)
+    except OSError:
+        print(c.FAIL + "Decrypting the pdf file encrypted with user_0's private key.")
+        sys.exit(1)
+    else:
+        print(c.OK + "Decrypting the pdf file encrypted with user_0's private key.")
+    return
+
+def encDecLoopUserZero():
+    count = 1
+    while count <= 20:
+        try:
+            encipherForUserZero(userProfiles)
+            decipherForUserZero()
+        except OSError:
+            print(c.FAIL + "Encrypting and Decrypting for user_0. Round %i" % count)
+            sys.exit(1)
+        else:
+            print(c.OK + "Encrypting and decrypting for user_0. Round %i" % count)
+        count += 1
+    return
 
 ################### DRIVER CODE ##################
 
 if __name__ == "__main__":
     n_users, n_attributes = [int(arg) for arg in cmdReturn2()]
+    #environment = os.environ
+    #userProfiles = environment['userProfiles']
     #print(len(n_attributes))
     downloadingPDF()
-    encipherForUsers(userProfiles)
-    decipherForUsers()
+    #encipherForUsers(userProfiles)
+    #decipherForUsers()
+    #encipherForUserZero(userProfiles)
+    #decipherForUserZero()
+    encDecLoopUserZero()

@@ -4,6 +4,7 @@ import time
 import sys
 import random
 from Color import c
+import string
 
 # USAGE CASE EXAMPLE: [euler@fedora]~% python3 User_Generator.py 20 5
 # which means that we want 20 users and 5 attributes
@@ -106,10 +107,12 @@ def setCpabeKeys():
 ################### KEY & ATTRIBUTE GENERATION ##################
 
 def attributeGeneration(n_users,n_attributes):
-    listAllAttributes = ["attr_"+str(i) for i in range(20)]
+    listAllAttributes = ["attr_"+str(i) for i in range(19)]
+    #listAllAttributes = ["attr_"+str(i) for i in range(20)]
     userProfiles = []
     for user in range(n_users):
-        chosenAttributes = random.sample(listAllAttributes,n_attributes)
+        chosenAttributes = random.sample(listAllAttributes,n_attributes-1)
+        #chosenAttributes = random.sample(listAllAttributes,n_attributes)
         userProfiles.append(chosenAttributes)
     print(c.OK + "Generating Random Attributes and Profiles")
     return userProfiles
@@ -117,7 +120,11 @@ def attributeGeneration(n_users,n_attributes):
 def profileGeneration(userProfiles):
     cmdList = []
     for i in range(n_users):
+        alphabet = list(string.ascii_lowercase[0:n_users])
+        userProfiles[i].append(alphabet[i])
         currentProfile = userProfiles[i]
+        print(currentProfile)
+        #currentProfile = userProfiles[i]
         cmdInd = "cpabe-keygen -o ../user_"+str(i)+"-dir/user_"+str(i)+"_priv pubKey msk " + " ".join(currentProfile)
         cmdList.append(cmdInd)
     count = 0
@@ -133,15 +140,33 @@ def profileGeneration(userProfiles):
     return
 
 ################### DRIVER CODE ##################
-n_users, n_attributes = [int(arg) for arg in cmdReturn()]
-userProfiles = attributeGeneration(n_users,n_attributes)
+#n_users, n_attributes = [int(arg) for arg in cmdReturn()]
+#userProfiles = attributeGeneration(n_users,n_attributes)
+#n_users, n_attributes = [int(arg) for arg in cmdReturn()]
+#creatingDirectories(n_users)
+#setCpabeKeys()
+#userProfiles = attributeGeneration(n_users,n_attributes)
+#userProfiles = attributeGeneration(n_users,n_attributes)
 
+n_users, n_attributes = [int(arg) for arg in cmdReturn()]
+creatingDirectories(n_users)
+setCpabeKeys()
+userProfiles = attributeGeneration(n_users,n_attributes)
+profileGeneration(userProfiles)
+#os.environ['n_users'] = n_users
+#os.environ['n_attributes'] = n_attributes
+#os.environ['userProfiles'] = userProfiles
+
+"""
 if __name__ == "__main__":
     #n_users, n_attributes = [checkInput()
     #n_users, n_attributes = int(n_users), int(n_attributes)
     #n_users, n_attributes = [int(arg) for arg in cmdReturn()]
     #userProfiles = attributeGeneration(n_users,n_attributes)
+    n_users, n_attributes = [int(arg) for arg in cmdReturn()]
     creatingDirectories(n_users)
     setCpabeKeys()
+    userProfiles = attributeGeneration(n_users,n_attributes)
     #userProfiles = attributeGeneration(n_users,n_attributes)
     profileGeneration(userProfiles)
+"""
