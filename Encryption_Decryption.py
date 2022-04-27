@@ -2,6 +2,7 @@ import os
 import sys
 from Color import c
 from ABE_Deployer import userProfiles
+import time
 
 # USAGE CASE EXAMPLE: [euler@fedora]~% python3 Encryption_Decryption.py 20 5
 # which means that we want 20 users and 5 attributes
@@ -103,8 +104,16 @@ def encDecLoopUserZero():
     return
 
 ################### DRIVER CODE ##################
+environment = os.environ
+counter = environment['counter']
 
 if __name__ == "__main__":
     n_users, n_attributes = [int(arg) for arg in cmdReturn2()]
     downloadingPDF()
+    startTime = time.time()
     encDecLoopUserZero()
+    execTime = (time.time() - startTime)
+    print("The encryption-decryption loop has lasted for: " + str(execTime))
+    file = open("/home/abe/EXERCISE_"+str(counter)+"/time.txt", "a")
+    file.write(str(execTime))
+    file.close()

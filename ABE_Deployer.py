@@ -2,7 +2,6 @@ import os
 import sys
 import random
 from Color import c
-import string
 
 # ATENCIÓN
 # ESTE ARCHIVO VA HASTA LA DIAPOSITVA 9 (INCLUIDA)
